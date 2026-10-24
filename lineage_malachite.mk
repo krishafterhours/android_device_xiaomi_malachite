@@ -13,6 +13,29 @@ $(call inherit-product, device/xiaomi/malachite/device.mk)
 # Inherit some common LineageOS stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
+# Lunaris AOSP 16.2 — malachite bring-up
+WITH_GMS := true
+WITH_BCR := true
+
+TARGET_OPTIMIZED_DEXOPT := true
+TARGET_USE_GPHOTOS := false
+
+# Keep disabled until kernel and SELinux support are verified
+BYPASS_CHARGE_SUPPORTED := false
+
+TARGET_CUSTOM_UDFPS := true
+SURFACE_FLINGER_BOOST := true
+TARGET_ENABLE_BLUR := true
+
+# Reality Engine is not recommended for MediaTek devices
+USE_REALITY_ENGINE := false
+
+USE_ADVANCED_DISPLAY_COLOR := true
+WITH_GMS_COMMS_SUITE := false
+WITH_PIXEL_LAUNCHER := true
+TARGET_USE_MAPS := true
+TARGET_USE_FILES := true
+
 # Tester builds, the default until the ROM is released: ro.debuggable=1 with
 # ADB authorisation kept, so testers can switch on Rooted debugging for checks
 # that need root, and bug reports include the root-only sections. LineageOS
