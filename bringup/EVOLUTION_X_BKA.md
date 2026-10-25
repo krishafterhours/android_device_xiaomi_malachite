@@ -8,8 +8,9 @@
 - Inherits `vendor/lineage/config/common_full_phone.mk`; on Evolution X's bka source this is the common device entry point that brings in the Evolution X additions through the Lineage config.
 - Explicitly selects full GMS by setting `WITH_GMS := true` and disabling the mini/pico variants.
 - Adds `manifests/evolution-x-bka.xml` to override the device tree with this branch and bring in the malachite-specific vendor, prebuilt-kernel and platform forks.
+- Leaves Evolution X's own framework, Settings, Telephony and Bluetooth source projects intact. The malachite-specific changes from the corresponding LineageOS forks are not copied wholesale because that would overwrite Evolution X changes.
 
-Do not replace the product inheritance with a guessed `vendor/evolution/config/common_full_phone.mk` path. The upstream Evolution X bka device-tree example uses `vendor/lineage/config/common_full_phone.mk`.
+The upstream Evolution X bka device-tree example uses `vendor/lineage/config/common_full_phone.mk`; do not replace it with a guessed common-config path.
 
 ## Cloud build setup
 
@@ -45,6 +46,10 @@ lunch lineage_malachite-userdebug
 Only proceed if that product appears in the lunch target list and product configuration completes without missing-inherit, missing-file or duplicate-copy errors. If the target name is not listed, stop and inspect `lunch` output rather than inventing a product alias.
 
 For the first build, preserve the device tree's current prebuilt-kernel selection. Do not flip `TARGET_FORCE_PREBUILT_KERNEL`, replace the kernel image, add a DTBO image, or change firmware assumptions as part of this product-config bring-up.
+
+## Required follow-up porting
+
+The malachite LineageOS source manifest carries device-specific patches in `frameworks/native` (MediaTek GED KPI/libgui integration), `frameworks/base` (FaceSense provider), Settings and Telephony (native eSIM behavior), and Bluetooth (MTK A2DP offload fix). Evolution X bka supplies its own versions of those projects. Before claiming feature parity, compare the exact patches and port only the required hunks onto the matching Evolution X bka revisions; do not replace those projects with the LineageOS forks. Verify the libgui ABI, telephony/eSIM behavior, Bluetooth coexistence and SELinux policy after porting. These ports are not included or validated by this initial product-configuration change.
 
 ## Required gates before calling this a successful ROM bring-up
 
