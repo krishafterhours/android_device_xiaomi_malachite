@@ -4,12 +4,12 @@
 
   Initialize with:
     repo init -u https://github.com/Evolution-X/manifest.git -b bka --git-lfs
-  Copy this file to .repo/local_manifests/malachite-evox.xml before repo sync.
+  Download this file to .repo/local_manifests/malachite-evox.xml before sync.
 
-  The device tree is taken from the user's working branch. Other device-specific
-  repositories follow the malachite-project lineage-23.2 source branches, which
-  are based on the same Android 16 / LineageOS 23.2 platform. This manifest
-  selects source inputs; it is not evidence of a successful build or boot.
+  This deliberately keeps Evolution X's own frameworks/base, frameworks/native,
+  Settings, Telephony and Bluetooth projects. The malachite-specific patches in
+  those LineageOS forks must be ported and reviewed separately; replacing them
+  wholesale would silently discard Evolution X changes.
 -->
 <manifest>
   <remote name="malachite-project" fetch="https://github.com/malachite-project/" />
@@ -35,21 +35,10 @@
   <remove-project path="vendor/mediatek/ims" optional="true" />
   <project path="vendor/mediatek/ims" name="android_vendor_mediatek_ims" remote="malachite-project" revision="lineage-23.2" />
 
-  <!-- Source overrides retained by the malachite platform integration -->
+  <!-- WPA supplicant workaround from the malachite platform branch -->
   <remove-project path="external/wpa_supplicant_8" optional="true" />
   <project path="external/wpa_supplicant_8" name="android_external_wpa_supplicant_8" remote="malachite-project" revision="lineage-23.2" />
-  <remove-project path="frameworks/base" optional="true" />
-  <project path="frameworks/base" name="android_frameworks_base" remote="malachite-project" revision="lineage-23.2" groups="pdk-cw-fs,pdk-fs,sysui-studio" />
-  <remove-project path="frameworks/native" optional="true" />
-  <project path="frameworks/native" name="android_frameworks_native" remote="malachite-project" revision="lineage-23.2" />
-  <remove-project path="packages/apps/Settings" optional="true" />
-  <project path="packages/apps/Settings" name="android_packages_apps_Settings" remote="malachite-project" revision="lineage-23.2" />
-  <remove-project path="packages/services/Telephony" optional="true" />
-  <project path="packages/services/Telephony" name="android_packages_services_Telephony" remote="malachite-project" revision="lineage-23.2" />
-  <remove-project path="packages/modules/Bluetooth" optional="true" />
-  <project path="packages/modules/Bluetooth" name="android_packages_modules_Bluetooth" remote="malachite-project" revision="lineage-23.2" groups="pdk" />
 
-  <!-- Additional device integrations -->
-  <project path="packages/apps/ParanoidSense" name="android_packages_apps_ParanoidSense" remote="malachite-project" revision="lineage-23.2" />
+  <!-- Device-specific Dolby control app / DAX integration -->
   <project path="hardware/dolby" name="android_hardware_dolby" remote="malachite-project" revision="lineage-23.2" />
 </manifest>
