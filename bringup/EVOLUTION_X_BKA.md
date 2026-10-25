@@ -15,25 +15,25 @@ Do not replace the product inheritance with a guessed `vendor/evolution/config/c
 
 Start from a clean Android 16 workspace with adequate disk, RAM and swap. Do not reuse a workspace initialized from another ROM without first checking its root manifest and local manifests.
 
+Initialize the Evolution X bka manifest, then download the local manifest **before the first sync**:
+
 ```bash
 repo init -u https://github.com/Evolution-X/manifest.git -b bka --git-lfs
 mkdir -p .repo/local_manifests
-cp device/xiaomi/malachite/manifests/evolution-x-bka.xml .repo/local_manifests/malachite-evox.xml
+curl -fL https://raw.githubusercontent.com/nx7rq/android_device_xiaomi_malachite/evox/bka-initial-product-config/manifests/evolution-x-bka.xml -o .repo/local_manifests/malachite-evox.xml
 repo sync -c -j4
 ```
-
-If setting up the local manifest before the first sync, save this repository's manifest file outside the checkout first, or download it from this branch and place it at `.repo/local_manifests/malachite-evox.xml`. Do not run the `cp` command above before `device/xiaomi/malachite` exists.
 
 After sync, record the exact source state before trying a build:
 
 ```bash
-repo manifest -r > out-mal achite-resolved-manifest.xml
+repo manifest -r > out-malachite-resolved-manifest.xml
 git -C device/xiaomi/malachite rev-parse HEAD
 git -C vendor/xiaomi/malachite rev-parse HEAD
 git -C device/xiaomi/malachite-kernel rev-parse HEAD
 ```
 
-Rename the output file to `out-malachite-resolved-manifest.xml` if preferred; keep the resolved manifest with build logs. The branch-based dependency references are not an immutable lock until `repo manifest -r` is saved.
+Keep the resolved manifest with build logs. The branch-based dependency references are not an immutable lock until `repo manifest -r` is saved.
 
 ## Product configuration check
 
