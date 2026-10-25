@@ -10,24 +10,16 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Inherit from device makefile.
 $(call inherit-product, device/xiaomi/malachite/device.mk)
 
-# Inherit some common LineageOS stuff.
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+# Inherit Evolution X's full-phone configuration (Android 16 / bka).
+$(call inherit-product, vendor/evolution/config/common_full_phone.mk)
 
-# Evolution X build configuration.
-# Keep the standard lineage_<device> product name for Evolution X lunch targets.
+# Full GMS package set. Evolution X's common config selects gms_full.mk
+# when WITH_GMS=true and neither the mini nor pico option is enabled.
 WITH_GMS := true
 TARGET_USES_MINI_GAPPS := false
-TARGET_HAS_UDFPS := true
-TARGET_INCLUDE_BOOT_ANIMATIONS := true
-TARGET_ENABLE_BLUR := true
+TARGET_USES_PICO_GAPPS := false
 
-# Tester builds, the default until the ROM is released: ro.debuggable=1 with
-# ADB authorisation kept, so testers can switch on Rooted debugging for checks
-# that need root, and bug reports include the root-only sections. LineageOS
-# makes userdebug builds non-debuggable unless WITH_ADB_INSECURE is set, and
-# the build treats any non-empty value as true, so clear it here, after the
-# inherits (this assignment replaces their values). MALACHITE_RELEASE=true
-# builds keep LineageOS's non-debuggable release setting.
+# Keep tester builds userdebug unless explicitly building a release.
 ifneq ($(MALACHITE_RELEASE),true)
 PRODUCT_NOT_DEBUGGABLE_IN_USERDEBUG :=
 endif
