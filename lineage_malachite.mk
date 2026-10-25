@@ -7,17 +7,17 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+# Select full GMS before common config evaluates the package-set conditionals.
+WITH_GMS := true
+TARGET_USES_MINI_GAPPS := false
+TARGET_USES_PICO_GAPPS := false
+
 # Evolution X's bka tree follows the LineageOS device-product contract.
 # Its vendor/lineage common config includes Evolution X's custom config.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
 # Inherit device-specific configuration after common defaults.
 $(call inherit-product, device/xiaomi/malachite/device.mk)
-
-# Full GMS: leave both reduced package variants disabled.
-WITH_GMS := true
-TARGET_USES_MINI_GAPPS := false
-TARGET_USES_PICO_GAPPS := false
 
 PRODUCT_NAME := lineage_malachite
 PRODUCT_DEVICE := malachite
