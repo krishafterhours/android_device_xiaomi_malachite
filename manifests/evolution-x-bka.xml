@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Evolution X Android 16 (bka) local manifest for malachite.
+
+  Initialize with:
+    repo init -u https://github.com/Evolution-X/manifest.git -b bka --git-lfs
+  Download this file to .repo/local_manifests/malachite-evox.xml before sync.
+
+  This deliberately keeps Evolution X's own frameworks/base, frameworks/native,
+  Settings, Telephony and Bluetooth projects. The malachite-specific patches in
+  those LineageOS forks must be ported and reviewed separately; replacing them
+  wholesale would silently discard Evolution X changes.
+-->
+<manifest>
+  <remote name="malachite-project" fetch="https://github.com/malachite-project/" />
+  <remote name="nx7rq" fetch="https://github.com/" />
+
+  <!-- User-owned device tree -->
+  <remove-project path="device/xiaomi/malachite" optional="true" />
+  <project path="device/xiaomi/malachite" name="nx7rq/android_device_xiaomi_malachite" remote="nx7rq" revision="evox/bka-initial-product-config" />
+
+  <!-- Device-specific vendor and prebuilt-kernel inputs -->
+  <remove-project path="device/xiaomi/malachite-kernel" optional="true" />
+  <project path="device/xiaomi/malachite-kernel" name="android_device_xiaomi_malachite-kernel" remote="malachite-project" revision="lineage-23.2" />
+  <remove-project path="vendor/xiaomi/malachite" optional="true" />
+  <project path="vendor/xiaomi/malachite" name="proprietary_vendor_xiaomi_malachite" remote="malachite-project" revision="lineage-23.2" />
+
+  <!-- MediaTek / Xiaomi platform integrations required by device.mk -->
+  <remove-project path="hardware/mediatek" optional="true" />
+  <project path="hardware/mediatek" name="android_hardware_mediatek" remote="malachite-project" revision="lineage-23.2" />
+  <remove-project path="hardware/xiaomi" optional="true" />
+  <project path="hardware/xiaomi" name="android_hardware_xiaomi" remote="malachite-project" revision="lineage-23.2" />
+  <remove-project path="device/mediatek/sepolicy_vndr" optional="true" />
+  <project path="device/mediatek/sepolicy_vndr" name="android_device_mediatek_sepolicy_vndr" remote="malachite-project" revision="lineage-23.2" />
+  <remove-project path="vendor/mediatek/ims" optional="true" />
+  <project path="vendor/mediatek/ims" name="android_vendor_mediatek_ims" remote="malachite-project" revision="lineage-23.2" />
+
+  <!-- WPA supplicant workaround from the malachite platform branch -->
+  <remove-project path="external/wpa_supplicant_8" optional="true" />
+  <project path="external/wpa_supplicant_8" name="android_external_wpa_supplicant_8" remote="malachite-project" revision="lineage-23.2" />
+
+  <!-- Device-specific Dolby control app / DAX integration -->
+  <project path="hardware/dolby" name="android_hardware_dolby" remote="malachite-project" revision="lineage-23.2" />
+</manifest>

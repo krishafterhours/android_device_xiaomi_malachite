@@ -3,26 +3,21 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# Inherit from those products. Most specific first.
+# Inherit base Android product definitions.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Inherit from device makefile.
-$(call inherit-product, device/xiaomi/malachite/device.mk)
+# Select full GMS before common config evaluates the package-set conditionals.
+WITH_GMS := true
+TARGET_USES_MINI_GAPPS := false
+TARGET_USES_PICO_GAPPS := false
 
-# Inherit some common LineageOS stuff.
+# Evolution X's bka tree follows the LineageOS device-product contract.
+# Its vendor/lineage common config includes Evolution X's custom config.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
-# Tester builds, the default until the ROM is released: ro.debuggable=1 with
-# ADB authorisation kept, so testers can switch on Rooted debugging for checks
-# that need root, and bug reports include the root-only sections. LineageOS
-# makes userdebug builds non-debuggable unless WITH_ADB_INSECURE is set, and
-# the build treats any non-empty value as true, so clear it here, after the
-# inherits (this assignment replaces their values). MALACHITE_RELEASE=true
-# builds keep LineageOS's non-debuggable release setting.
-ifneq ($(MALACHITE_RELEASE),true)
-PRODUCT_NOT_DEBUGGABLE_IN_USERDEBUG :=
-endif
+# Inherit device-specific configuration after common defaults.
+$(call inherit-product, device/xiaomi/malachite/device.mk)
 
 PRODUCT_NAME := lineage_malachite
 PRODUCT_DEVICE := malachite
@@ -33,6 +28,9 @@ PRODUCT_MODEL := 24090RA29G
 PRODUCT_SYSTEM_NAME := malachite_global
 PRODUCT_SYSTEM_DEVICE := malachite
 
+# This fingerprint is retained from the current tree. It describes OS3 while
+# the documented proprietary userspace baseline is OS2; do not treat it as
+# proof that OS3 binaries or firmware are in use or compatible.
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildFingerprint=Xiaomi/hal_mgvi_64_armv82_mt6878_global/mgvi_64_armv82:14/UP1A.231005.007/OS3.0.10.0.WOOMIXM:user/release-keys \
     SystemModel=$(PRODUCT_SYSTEM_DEVICE) \
