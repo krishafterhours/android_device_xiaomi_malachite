@@ -13,6 +13,14 @@ $(call inherit-product, device/xiaomi/malachite/device.mk)
 # Inherit some common LineageOS stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
+# Evolution X build configuration.
+# Keep the standard lineage_<device> product name for Evolution X lunch targets.
+WITH_GMS := true
+TARGET_USES_MINI_GAPPS := false
+TARGET_HAS_UDFPS := true
+TARGET_INCLUDE_BOOT_ANIMATIONS := true
+TARGET_ENABLE_BLUR := true
+
 # Tester builds, the default until the ROM is released: ro.debuggable=1 with
 # ADB authorisation kept, so testers can switch on Rooted debugging for checks
 # that need root, and bug reports include the root-only sections. LineageOS
